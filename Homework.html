@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+    <style type="text/css">
+    	* {
+		    font-family: Arial;
+		}
+
+		.is-hidden {
+		    display: none;
+		}
+
+		form {
+		    display: flex;
+		    flex-direction: column;
+		    width: 300px;
+		    margin: auto;
+		    padding: 20px;
+		    border: 3px double #ccc;
+		}
+
+		label {
+		    display: flex;
+		    flex-direction: column;
+		    text-align: center;
+		}
+
+		input[type="button"] {
+		    width: 100px;
+		    margin: 20px auto;
+		}
+
+		h1 {
+		    text-align: center
+		}
+    </style>
+</head>
+<body>
+    <!-- Создайте страницу которая запрашивает имя пользователя, если пользователь вводит "Admin" либо "admin" он попадает на страницу,
+    которая оповещает его о том что " Пользоваетль Admin(не статическая строка, а данные что ввел пользователь) вошел в систему"
+    а рядом разместите кнопку "Выход" которая вернет пользователя к модальному окну ввода логина. Реализуйте код как для куки так и для localstorage. -->
+	<div id="registration-wrapper" class="is-hidden">
+        <h1>Registration</h1>
+        <form>
+            <label>
+                <h3>Your name</h3>
+                <input type="text" placeholder="Enter your name" name="name">
+            </label>
+            <label>
+                <h3>Your email</h3>
+                <input type="text" placeholder="Enter your email" name="email">
+            </label>
+            <label>
+                <h3>Your password</h3>
+                <input type="password" placeholder="Enter your password" name="password">
+            </label>
+            <input type="button" value="Login">
+        </form>
+    </div>
+    <div id="login-wrapper" class="is-hidden">
+        <h1>Login</h1>
+        <form>
+            <label>
+                <h3>Your email</h3>
+                <input type="text" name="email" placeholder="Enter your email">
+            </label>
+            <label>
+                <h3>Your password</h3>
+                <input type="password" name="password" placeholder="Enter your password">
+            </label>
+            <input type="button" value="Login">
+        </form>
+    </div>
+    <div id="account-wrapper" class="is-hidden">
+        <!-- <h1><span id="userName"></span>'s page</h1> -->
+        <div>
+        	<span id="userName"></span> зашли в систему
+        	<button onclick="outThis()">Віход</button>
+        </div>
+        <!-- form>
+            <label>
+                <h3>Your email</h3>
+                <input type="text" placeholder="some value" name="email">
+            </label>
+            <label>
+                <h3>Your password</h3>
+                <input type="text" placeholder="some value" name="password">
+            </label>
+            <input type="button" value="Save data">
+        </form>
+ -->    </div>
+</div>
+<script type="text/javascript">
+	var userName = document.querySelector("#userName");
+	var accountPage =  document.querySelector("#account-wrapper");
+	var logIn = '';
+	if (localStorage.getItem('logIn')) {
+		logIn = localStorage.getItem('logIn');
+		accountPage.classList.remove('is-hidden');
+		userName.innerHTML = logIn;
+	}
+	window.onload = function() {
+		if (localStorage.getItem('logIn')) {
+			accountPage.classList.remove('is-hidden');
+			userName.innerHTML = localStorage.getItem('logIn');
+		} else {
+			logIn = prompt("Write something?");
+		}
+		if(logIn === 'Admin' || logIn === 'admin') {
+			localStorage.setItem('logIn', logIn);
+			accountPage.classList.remove('is-hidden');
+			userName.innerHTML = logIn;
+		}
+	}
+	function outThis() {
+		accountPage.classList.add('is-hidden');
+		userName.innerHTML = logIn;
+		localStorage.removeItem('logIn');
+		logIn = '';
+		setTimeout(
+			function writeThis() {
+		  		logIn = prompt("Write something?");
+		  		if(logIn === 'Admin' || logIn === 'admin') {
+					localStorage.setItem('logIn', logIn);
+					accountPage.classList.remove('is-hidden');
+					userName.innerHTML = logIn;
+				}
+			}, 500);
+		
+	}
+</script>
+</body>
+</html>
